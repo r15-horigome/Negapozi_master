@@ -82,7 +82,7 @@ public class InputActivity extends Activity {
                 //TODO デバック用
                 //コメントアウトするなり削除するなり自由です。
                 //ネガポジ機能デバック用データの作成
-                //createNegapoziData();
+                createNegapoziData();
                 //次画面での表示処理
                 Intent timelineIntent = new Intent(InputActivity.this, TimelineActivity.class);
                 startActivity(timelineIntent);
