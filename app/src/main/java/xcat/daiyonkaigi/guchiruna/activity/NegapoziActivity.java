@@ -44,7 +44,7 @@ import xcat.daiyonkaigi.guchiruna.negapozi.ChartView;
 public class NegapoziActivity extends Activity implements View.OnClickListener {
 
     // 各月の日数
-    public static final int[] MONTHDAYS = {31,29,31,30,31,30,31,31,30,31,30,31};
+    public static final int[] MONTHDAYS = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     // グラフ表示の基準となる日付
     private int YEAR;
     private int MONTH;
@@ -152,13 +152,13 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
         while (mindateroop) {
             this.MINYEAR = mindate.getInt(0);
             this.MINMONTH = mindate.getInt(1);
-            Log.e("NEGAPOZI","最小年："+this.MINYEAR+"最小月"+this.MINMONTH);
+            Log.e("NEGAPOZI", "最小年：" + this.MINYEAR + "最小月" + this.MINMONTH);
             mindateroop = mindate.moveToNext();
         }
 
-        Log.e("NEGAPOZI--START--",yearStr + monthStr + dayStr);
+        Log.e("NEGAPOZI--START--", yearStr + monthStr + dayStr);
         // グラフ描画（月単位用）
-        graph2 = (ChartView)findViewById(R.id.graphview2);
+        graph2 = (ChartView) findViewById(R.id.graphview2);
         totalpozi = new int[32];
         totalnega = new int[32];
         this.createGraph();
@@ -170,14 +170,15 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
         setButtonEnabled();
 
     }
+
     /*  各ボタンクリック時の処理 */
-    public void onClick(View v){
+    public void onClick(View v) {
 
         /* 年か月か  */
         // 年単位（ALL）
-        if( v == all ){
+        if (v == all) {
             //　今が月単位なら
-            if(graphallflag == 1) {
+            if (graphallflag == 1) {
                 // 今が円なら円表示
                 if (graphflag == 2) {
                     graphallflag = 2;
@@ -204,52 +205,85 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
                 }
             }
         }
-        // 次月
-        if (v == mirai){
-            MONTH = MONTH +1;
-            if (MONTH == 13){
-                MONTH = 1;
-                YEAR = YEAR+1;
-            }
-            //折れ線か円か
-            if (graphflag == 1) {
-                this.createGraph();
-                all.setText("年");
+        // 次月または次年
+        if (v == mirai) {
+            if(graphallflag == 2) {
+                YEAR = YEAR + 1;
+                // 折れ線か円か
+                if (graphflag == 1) {
+                    this.createAllGraph();
+                    all.setText("月");
+                } else {
+                    this.createPieChart();
+                    all.setText("月");
+                }
             } else {
-                this.createPieChart();
-                all.setText("年");
+                MONTH = MONTH + 1;
+                if (MONTH == 13) {
+                    MONTH = 1;
+                    YEAR = YEAR + 1;
+                }
+                //折れ線か円か
+                if (graphflag == 1) {
+                    this.createGraph();
+                    all.setText("年");
+                } else {
+                    this.createPieChart();
+                    all.setText("年");
+                }
             }
-            // 前月
-        }else if (v == kako){
-            MONTH = MONTH -1;
-            if (MONTH == 0){
-                MONTH =12;
-                YEAR = YEAR-1;
-            }
-            // 折れ線か円か
-            if (graphflag == 1) {
-                this.createGraph();
-                all.setText("年");
+
+            // 前月または前年
+        } else if (v == kako) {
+            // 年単位なら
+            if(graphallflag == 2){
+                YEAR = YEAR +1;
+                // 折れ線か円か
+                if (graphflag == 1) {
+                    this.createAllGraph();
+                    all.setText("月");
+                } else {
+                    this.createPieChart();
+                    all.setText("月");
+                }
+                // 月単位なら
             } else {
-                this.createPieChart();
-                all.setText("年");
+                MONTH = MONTH - 1;
+                if (MONTH == 0) {
+                    MONTH = 12;
+                    YEAR = YEAR - 1;
+                }
+                // 折れ線か円か
+                if (graphflag == 1) {
+                    this.createGraph();
+                    all.setText("年");
+                } else {
+                    this.createPieChart();
+                    all.setText("年");
+                }
             }
+
             /*  ランキング画面に遷移  */
-        }else if (v == rank){
+        } else if (v == rank) {
             /*  ネガポジ画面に遷移  */
-        }else if (v == negapozi){
+        } else if (v == negapozi) {
             /* 入力画面に遷移 */
-        }else if(v == form){
+        } else if (v == form) {
             /* 円グラフ表示 */
-        }else if(v == en){
+        } else if (v == en) {
             // 今が折れ線なら円表示
-            if(graphflag == 1){
+            if (graphflag == 1) {
                 this.createPieChart();
                 graphflag = 2;
                 en.setText("折");
                 // それ以外は折れ線表示
-            }else{
-                this.createGraph();
+            } else {
+                // 年単位か月単位か
+                if(graphallflag == 1) {
+                    this.createGraph();
+                }else{
+                    this.createAllGraph();
+                }
                 graphflag = 1;
                 en.setText("円");
             }
@@ -263,19 +297,36 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
      * 各ボタンの有効状態を設定
      *
      * */
-    private void setButtonEnabled(){
+    private void setButtonEnabled() {
         /* ボタンの有効状態 */
+        /* 月表示の場合(graphallflag = 1) */
+        if (this.graphallflag == 1) {
         /* 現在表示日付 >= 年月の最大値 なら次月ボタン無効。それ以外は有効 */
-        if ( (this.YEAR >= this.MAXYEAR) && (this.MONTH >= this.MAXMONTH) ){
-            mirai.setEnabled(false);
-        } else {
-            mirai.setEnabled(true);
-        }
+            if ((this.YEAR >= this.MAXYEAR) && (this.MONTH >= this.MAXMONTH)) {
+                mirai.setEnabled(false);
+            } else {
+                mirai.setEnabled(true);
+            }
         /* 現在表示日付 <= 年月の最小値 なら前月ボタン無効。それ以外は有効 */
-        if ( (this.YEAR <= this.MINYEAR) && (this.MONTH <= this.MINMONTH) ){
-            kako.setEnabled(false);
-        } else {
-            kako.setEnabled(true);
+            if ((this.YEAR <= this.MINYEAR) && (this.MONTH <= this.MINMONTH)) {
+                kako.setEnabled(false);
+            } else {
+                kako.setEnabled(true);
+            }
+            /* 年表示の場合(graphallflag=2) */
+        } else if(this.graphallflag == 2) {
+            /* 現在表示日付 >= 年月の最大値 なら次月ボタン無効。それ以外は有効 */
+            if ((this.YEAR >= this.MAXYEAR)) {
+                mirai.setEnabled(false);
+            } else {
+                mirai.setEnabled(true);
+            }
+        /* 現在表示日付 <= 年月の最小値 なら前月ボタン無効。それ以外は有効 */
+            if ((this.YEAR <= this.MINYEAR)) {
+                kako.setEnabled(false);
+            } else {
+                kako.setEnabled(true);
+            }
         }
     }
 
