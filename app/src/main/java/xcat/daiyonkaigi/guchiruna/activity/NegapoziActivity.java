@@ -456,8 +456,14 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
      *  */
     private void createPieChart(){
 
-        /* 指定月の日数ごとのネガポジ度数、日にちの取得 */
-        String sqlformonth = "SELECT distinct Day,SUM(Pozi),SUM(Nega) FROM negapozi WHERE Year = "+ this.YEAR + " AND Month = "+ this.MONTH + " GROUP BY Day ORDER BY day ASC";
+        String sqlformonth = null;
+        if (graphallflag == 1) {
+            /* 指定月の日数ごとのネガポジ度数、日にちの取得 */
+            sqlformonth = "SELECT distinct Day,SUM(Pozi),SUM(Nega) FROM negapozi WHERE Year = " + this.YEAR + " AND Month = " + this.MONTH + " GROUP BY Day ORDER BY day ASC";
+        } else {
+            /* 指定年の日数ごとのネガポジ度数、日にちの取得 */
+            sqlformonth = "SELECT distinct Month,SUM(Pozi),SUM(Nega) FROM negapozi WHERE Year = "+ this.YEAR +  " GROUP BY Month ORDER BY Month ASC";
+        }
         Cursor cu = db.rawQuery(sqlformonth, null);
         boolean mov2 = cu.moveToFirst();
 
