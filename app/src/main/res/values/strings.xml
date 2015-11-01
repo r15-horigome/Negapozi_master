@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Guchiruna</string>
+    <string name="action_settings">Settings</string>
+
+
+    <!-- テキスト入力画面で使用する文字列 -->
+    <string name="title_input">テキストを入力してください</string>
+    <string name="button_input">Confirm</string>
+
+    <!-- ログ確認画面で使用する文字列 -->
+    <string name="guchi">ぐちる</string>
+    <string name="title_negapozi">ネガポジ</string>
+    <string name="menu">メニュー</string>
+</resources>

@@ -1,0 +1,96 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:columnCount="3"
+    android:rowCount="4"
+    android:weightSum="1"
+    android:background="#000033">
+
+    <!-- ここに子の部品を追加 -->
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/Text2"
+        android:gravity="center"
+        android:text="ネガポジ画面" />
+
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="top"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="＜"
+            android:id="@+id/kako"
+            android:layout_column="10" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ALL"
+            android:id="@+id/all"
+            android:layout_column="11" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="円"
+            android:id="@+id/en"
+            android:layout_column="12" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="＞"
+            android:id="@+id/mirai"
+            android:layout_column="13" />
+
+    </GridLayout>
+
+    <xcat.daiyonkaigi.guchiruna.negapozi.ChartView
+        android:id="@+id/graphview2"
+        android:layout_width="500dp"
+        android:layout_height="300dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="1" />
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="134dp"
+        android:layout_gravity="bottom">
+
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="RANK"
+            android:id="@+id/rank"
+            android:layout_weight="0.33" />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="ネガポジ"
+            android:id="@+id/negapozi"
+            android:layout_weight="0.33"
+            />
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="FORM"
+            android:id="@+id/form"
+            android:layout_weight="0.33" />
+    </LinearLayout>
+
+</LinearLayout>
