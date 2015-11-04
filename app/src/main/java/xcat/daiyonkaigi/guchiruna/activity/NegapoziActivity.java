@@ -378,10 +378,12 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
             maxDays = MONTHDAYS[this.MONTH-1];
         }
         while (graphcount < maxDays){
-            pozisum = pozisum + totalpozi[graphcount];
+            /*pozisum = pozisum + totalpozi[graphcount];
             negasum = negasum + totalnega[graphcount];
             seriespozi.add(graphcount+1,pozisum);
-            seriesnega.add(graphcount+1,negasum);
+            seriesnega.add(graphcount+1,negasum);*/
+            seriespozi.add(graphcount+1,totalpozi[graphcount]);
+            seriesnega.add(graphcount+1,totalnega[graphcount]);
             graphcount++;
         }
         dataset.addSeries(seriespozi);
@@ -418,16 +420,16 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
         // *** Y軸の目盛間隔とフォントの変更
         ValueAxis yAxis = plot.getRangeAxis();
         TickUnits ty = new TickUnits();
-        TickUnit uniY = new NumberTickUnit(10);
+        TickUnit uniY = new NumberTickUnit(4);
         ty.add(uniY);
         yAxis.setStandardTickUnits(ty);
         yAxis.setTickLabelFont(xyTitleFont);
-        yAxis.setRange(0, 50);
+        yAxis.setRange(0, 20);
         yAxis.setLabelFont(xyTitleFontLabel);
         // *** x軸の目盛間隔とフォントの変更
         ValueAxis xAxis = plot.getDomainAxis();
         TickUnits tx = new TickUnits();
-        TickUnit uniX = new NumberTickUnit(10);
+        TickUnit uniX = new NumberTickUnit(2);
         tx.add(uniX);
         xAxis.setStandardTickUnits(tx);
         xAxis.setTickLabelFont(xyTitleFont);
@@ -578,14 +580,17 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
         int pozisum = 0;
         int negasum = 0;
         /* 0からスタート */
-        seriespozi.add(0.0,0.0);
-        seriesnega.add(0.0,0.0);
+        //seriespozi.add(0.0,0.0);
+        //seriesnega.add(0.0,0.0);
         /* 折れ線グラフ描画 */
         while (graphcount < MONTHDAYS[this.MONTH-1]){
+            /* 積み上げグラフからふつーのグラフに変更
             pozisum = pozisum + totalpozi[graphcount];
             negasum = negasum + totalnega[graphcount];
             seriespozi.add(graphcount+1,pozisum);
-            seriesnega.add(graphcount+1,negasum);
+            seriesnega.add(graphcount+1,negasum);*/
+            seriespozi.add(graphcount+1,totalpozi[graphcount]);
+            seriesnega.add(graphcount+1,totalnega[graphcount]);
             graphcount++;
         }
         dataset.addSeries(seriespozi);
@@ -622,20 +627,22 @@ public class NegapoziActivity extends Activity implements View.OnClickListener {
         // *** Y軸の目盛間隔とフォントの変更
         ValueAxis yAxis = plot.getRangeAxis();
         TickUnits ty = new TickUnits();
-        TickUnit uniY = new NumberTickUnit(120);
+        // 縦幅
+        TickUnit uniY = new NumberTickUnit(10);
         ty.add(uniY);
         yAxis.setStandardTickUnits(ty);
         yAxis.setTickLabelFont(xyTitleFont);
-        yAxis.setRange(0, 600);
+        yAxis.setRange(0, 50);
         yAxis.setLabelFont(xyTitleFontLabel);
         // *** x軸の目盛間隔とフォントの変更
         ValueAxis xAxis = plot.getDomainAxis();
         TickUnits tx = new TickUnits();
-        TickUnit uniX = new NumberTickUnit(3);
+        // 横幅
+        TickUnit uniX = new NumberTickUnit(1);
         tx.add(uniX);
         xAxis.setStandardTickUnits(tx);
         xAxis.setTickLabelFont(xyTitleFont);
-        xAxis.setRange(0,12);
+        xAxis.setRange(1,12);
         xAxis.setLabelFont(xyTitleFontLabel);
         //*** 各線の太さ *****
         XYItemRenderer renderer = plot.getRenderer();
